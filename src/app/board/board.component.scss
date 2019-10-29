@@ -1,0 +1,23 @@
+.card {
+  margin: 10px;
+  font-size: 32px;
+  font-weight: 300;
+  background: lightblue;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 17px rgba(black, 0.5);
+    z-index: 10;
+  }
+
+  &.open, &.guessed {
+    background: lemonchiffon;
+  }
+
+  &.guessed, &.disabled {
+    pointer-events: none;
+  }
+}

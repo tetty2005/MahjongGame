@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'MahjongGame';
+  public isGameStarted = false;
+
+  public onStart() {
+    this.isGameStarted = true;
+  }
 }
