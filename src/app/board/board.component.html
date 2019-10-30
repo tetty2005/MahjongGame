@@ -2,6 +2,7 @@
   <mat-grid-tile
     class="card"
     *ngFor="let card of cards"
+    [@flyInOut]="'in'"
     [class.open]="card.state === 'open'"
     [class.guessed]="card.state === 'guessed'"
     [class.disabled]="openCardsAmount > 1"

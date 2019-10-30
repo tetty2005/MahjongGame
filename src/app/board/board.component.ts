@@ -1,12 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from './card/card.model';
 import { GameService } from '../game.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styleUrls: ['./board.component.scss'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ transform: 'translateX(0)' })),
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)' }),
+        animate(300)
+      ]),
+      transition('* => void', [
+        animate(300, style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
+
 export class BoardComponent implements OnInit {
   private openCard: Card;
   private cardsAmount = 30;
