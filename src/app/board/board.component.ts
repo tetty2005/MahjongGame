@@ -43,7 +43,10 @@ export class BoardComponent implements OnInit {
     const cards: Card[] = [];
 
     while (numbers.size < this.cardsAmount / 2) {
-      numbers.add(Math.floor(Math.random() * 50) + 1);
+      const randomNumber = Math.floor(Math.random() * 50) + 1;
+      if (randomNumber > 1 && this.isPrime(randomNumber)) {
+        numbers.add(randomNumber);
+      }
     }
     numbers.forEach((n: number) => cards.push(new Card(n), new Card(n)));
     this.cards = this.shuffleCards(cards);
@@ -51,7 +54,16 @@ export class BoardComponent implements OnInit {
     this.showCards();
   }
 
-  private showCards() {
+  private isPrime(value: number): boolean {
+    for (let i = 2; i < value; i++) {
+      if (value % i === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private showCards(): void {
     this.openCardsAmount = this.cardsAmount;
     this.cards.forEach(card => card.state = CardState.OPEN);
     setTimeout(() => {
