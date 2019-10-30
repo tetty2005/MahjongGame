@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameService } from './enums/game.service';
+import { GameService } from './services/game.service';
 import { GameMode } from './enums/game-mode.enum';
 import { Subscription } from 'rxjs';
 
@@ -34,7 +34,7 @@ export class AppComponent {
             this.isTimerStarted = true;
             break;
           case GameMode.WIN:
-            this.onStop('You are win!');
+            this.onStop('You won!');
             break;
         }
       });

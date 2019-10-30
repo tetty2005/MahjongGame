@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, interval, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GameService } from '../enums/game.service';
+import { GameService } from '../services/game.service';
 import { GameMode } from '../enums/game-mode.enum';
 
 @Component({

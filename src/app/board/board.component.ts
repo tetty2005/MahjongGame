@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Card } from './card/card.model';
-import { CardState } from './card/card-state.enum';
-import { GameService } from '../enums/game.service';
+import { CardState } from '../enums/card-state.enum';
+import { GameService } from '../services/game.service';
 import { GameMode } from '../enums/game-mode.enum';
 
 @Component({

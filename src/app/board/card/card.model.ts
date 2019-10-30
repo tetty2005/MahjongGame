@@ -1,4 +1,4 @@
-import { CardState } from './card-state.enum';
+import { CardState } from '../../enums/card-state.enum';
 
 export class Card {
   public state: CardState = CardState.CLOSED;

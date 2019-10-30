@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CardState } from './card-state.enum';
+import { CardState } from '../../enums/card-state.enum';
 
 @Component({
   selector: 'app-card',
