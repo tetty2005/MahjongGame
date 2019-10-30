@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from './card/card.model';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-board',
@@ -11,7 +12,7 @@ export class BoardComponent implements OnInit {
   public openCardsAmount = 0;
   public cards: Card[] = [];
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
     this.generateCards();
@@ -35,6 +36,7 @@ export class BoardComponent implements OnInit {
     setTimeout(() => {
       this.cards.forEach(card => card.state = 'close');
       this.openCardsAmount = 0;
+      this.gameService.modeChanged.next('started');
     }, 4000);
   }
 

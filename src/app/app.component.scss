@@ -4,7 +4,22 @@
   text-align: center;
 }
 
-.board-container {
+.board-wrapper {
   width: 80%;
   margin: 50px;
+}
+
+.timer-wrapper {
+  width: 40%;
+  margin-left: 50px;
+  height: 50px;
+  display: inline-flex;
+  background-color: whitesmoke;
+  font-size: 32px;
+  justify-content: center;
+  align-items: center;
+
+  &.hidden {
+    display: none;
+  }
 }
