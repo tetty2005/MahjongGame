@@ -9,6 +9,9 @@ import { GameService } from '../game.service';
 })
 export class BoardComponent implements OnInit {
   private openCard: Card;
+  private cardsAmount = 30;
+  private showCardsDuration = 4000;
+  private guessedCardsAmount: number;
   public openCardsAmount = 0;
   public cards: Card[] = [];
 
@@ -22,26 +25,27 @@ export class BoardComponent implements OnInit {
     const numbers = new Set();
     const cards: Card[] = [];
 
-    while (numbers.size < 15) {
+    while (numbers.size < this.cardsAmount / 2) {
       numbers.add(Math.floor(Math.random() * 50) + 1);
     }
     numbers.forEach((n: number) => cards.push(new Card(n), new Card(n)));
     this.cards = this.shuffleCards(cards);
-    setTimeout(() => this.showCards(), 1000);
+    this.guessedCardsAmount = 0;
+    this.showCards();
   }
 
   private showCards() {
-    this.openCardsAmount = 30;
+    this.openCardsAmount = this.cardsAmount;
     this.cards.forEach(card => card.state = 'open');
     setTimeout(() => {
       this.cards.forEach(card => card.state = 'close');
       this.openCardsAmount = 0;
       this.gameService.modeChanged.next('started');
-    }, 4000);
+    }, this.showCardsDuration);
   }
 
   private shuffleCards(cards: Card[]): Card[] {
-    let currentIndex = 30;
+    let currentIndex = this.cardsAmount;
     let temporaryValue;
     let randomIndex;
 
@@ -62,13 +66,18 @@ export class BoardComponent implements OnInit {
     this.openCardsAmount > 1 ? setTimeout(() => this.compareOpenCards(card), 1000) : this.openCard = card;
   }
 
-  private compareOpenCards(card: Card) {
+  private compareOpenCards(card: Card): void {
     if (card.name === this.openCard.name) {
       card.state = this.openCard.state = 'guessed';
+      this.guessedCardsAmount += 2;
     } else {
       card.state = this.openCard.state = 'close';
     }
     this.openCard = null;
     this.openCardsAmount = 0;
+
+    if (this.guessedCardsAmount === this.cardsAmount) {
+      this.gameService.modeChanged.next('win');
+    }
   }
 }

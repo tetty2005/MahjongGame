@@ -10,29 +10,37 @@ import { map } from 'rxjs/operators';
 })
 export class TimerComponent implements OnInit {
   private gameDuration = 120;
-  private currentTime = '';
-  private subscriptions: Subscription[] = [];
+  private currentTime: string;
+  private subscription: Subscription;
 
-  constructor(private gameService: GameService) { console.log('timer constructor'); }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
+    this.currentTime = this.formatValue(this.gameDuration);
     this.gameService.modeChanged.subscribe(
-      mode => mode === 'started' ? this.start() : this.stop()
+      mode => {
+        switch (mode) {
+          case 'started':
+            this.start();
+            break;
+          case 'off':
+            this.stop();
+            break;
+        }
+      }
     );
   }
 
   private start(): void {
-    this.currentTime = this.formatValue(this.gameDuration);
     const time: Observable<number> = interval(1000);
-    this.subscriptions.push(time
-        .pipe(map(v => this.gameDuration - (v + 1)))
-        .subscribe(v => {
-          this.currentTime = this.formatValue(v);
-          if (this.currentTime === '00:00') {
-            this.gameService.modeChanged.next('time ended');
-          }
-        })
-    );
+    this.subscription = time
+      .pipe(map(v => this.gameDuration - (v + 1)))
+      .subscribe(v => {
+        this.currentTime = this.formatValue(v);
+        if (this.currentTime === '00:00') {
+          this.gameService.modeChanged.next('time ended');
+        }
+      });
   }
 
   private formatValue(v): string {
@@ -45,7 +53,7 @@ export class TimerComponent implements OnInit {
   }
 
   private stop(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscription.unsubscribe();
     this.currentTime = this.formatValue(this.gameDuration);
   }
 }

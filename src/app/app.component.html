@@ -1,13 +1,24 @@
 <div class="title">
   <h2>Mahjong-like game</h2>
-  <button (click)="onStart()">Start New Game</button>
-  <p *ngIf="gameMode">Find similar cards:</p>
+  <button mat-raised-button
+          color="primary"
+          *ngIf="!gameMode"
+          (click)="onStart()">
+    Start New Game
+  </button>
+  <button mat-raised-button
+          color="accent"
+          *ngIf="gameMode"
+          (click)="onStop()"
+          [class.hidden]="!isTimerStarted">
+    Finish Game
+  </button>
+  <div class="timer-wrapper" [class.hidden]="!gameMode">
+    <app-timer></app-timer>
+  </div>
 </div>
 <div class="board-wrapper" *ngIf="gameMode">
   <app-board></app-board>
-</div>
-<div class="timer-wrapper" [class.hidden]="!gameMode">
-  <app-timer></app-timer>
 </div>
 <div class="result-wrapper">
   {{resultMessage}}

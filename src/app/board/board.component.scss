@@ -14,7 +14,8 @@
   }
 
   &.open, &.guessed {
-    background: lemonchiffon;
+    pointer-events: none;
+    background: lightgoldenrodyellow;
   }
 
   &.guessed, &.disabled {

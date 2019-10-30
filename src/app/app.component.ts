@@ -9,29 +9,41 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent {
   public gameMode = false;
+  public isTimerStarted = false;
   public resultMessage = '';
   private subscription: Subscription;
 
   constructor(private gameService: GameService) { }
 
-  public onStart() {
+  public onStart(): void  {
     this.subscribe();
     this.gameMode = true;
     this.resultMessage = '';
     this.gameService.modeChanged.next('on');
   }
 
-  private subscribe() {
+  private subscribe(): void  {
     this.subscription = this.gameService.modeChanged.subscribe(
       mode => {
-        if (mode === 'time ended') {
-          this.gameMode = false;
-          this.resultMessage = 'Your time is ended!';
-          this.onStop();
-        }});
+        switch (mode) {
+          case 'time ended':
+            this.onStop('Game Over!');
+            break;
+          case 'started':
+            this.isTimerStarted = true;
+            break;
+          case 'win':
+            this.onStop('You are win!');
+            break;
+        }
+      });
   }
 
-  private onStop() {
+  private onStop(message: string): void {
     this.subscription.unsubscribe();
+    this.gameService.modeChanged.next('off');
+    this.resultMessage = message || 'Try again!';
+    this.isTimerStarted = false;
+    this.gameMode = false;
   }
 }
