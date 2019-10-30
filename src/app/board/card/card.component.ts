@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CardState } from './card-state.enum';
 
 @Component({
   selector: 'app-card',
@@ -7,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CardComponent implements OnInit {
   @Input() card: number;
+  public cardState = CardState;
 
   constructor() { }
 

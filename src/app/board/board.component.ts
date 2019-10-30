@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Card } from './card/card.model';
-import { GameService } from '../game.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { Card } from './card/card.model';
+import { CardState } from './card/card-state.enum';
+import { GameService } from '../enums/game.service';
+import { GameMode } from '../enums/game-mode.enum';
 
 @Component({
   selector: 'app-board',
@@ -28,6 +30,7 @@ export class BoardComponent implements OnInit {
   private guessedCardsAmount: number;
   public openCardsAmount = 0;
   public cards: Card[] = [];
+  public cardState = CardState;
 
   constructor(private gameService: GameService) { }
 
@@ -50,11 +53,11 @@ export class BoardComponent implements OnInit {
 
   private showCards() {
     this.openCardsAmount = this.cardsAmount;
-    this.cards.forEach(card => card.state = 'open');
+    this.cards.forEach(card => card.state = CardState.OPEN);
     setTimeout(() => {
-      this.cards.forEach(card => card.state = 'close');
+      this.cards.forEach(card => card.state = CardState.CLOSED);
       this.openCardsAmount = 0;
-      this.gameService.modeChanged.next('started');
+      this.gameService.modeChanged.next(GameMode.TIME_STARTED);
     }, this.showCardsDuration);
   }
 
@@ -76,22 +79,23 @@ export class BoardComponent implements OnInit {
 
   public onClick(card: Card): void {
     this.openCardsAmount++;
-    card.state = 'open';
+    card.state = CardState.OPEN;
     this.openCardsAmount > 1 ? setTimeout(() => this.compareOpenCards(card), 1000) : this.openCard = card;
   }
 
   private compareOpenCards(card: Card): void {
     if (card.name === this.openCard.name) {
-      card.state = this.openCard.state = 'guessed';
+      card.state = this.openCard.state = CardState.GUESSED;
       this.guessedCardsAmount += 2;
     } else {
-      card.state = this.openCard.state = 'close';
+      card.state = this.openCard.state = CardState.CLOSED;
     }
+
     this.openCard = null;
     this.openCardsAmount = 0;
 
     if (this.guessedCardsAmount === this.cardsAmount) {
-      this.gameService.modeChanged.next('win');
+      this.gameService.modeChanged.next(GameMode.WIN);
     }
   }
 }

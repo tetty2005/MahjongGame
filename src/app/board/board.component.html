@@ -3,8 +3,8 @@
     class="card"
     *ngFor="let card of cards"
     [@flyInOut]="'in'"
-    [class.open]="card.state === 'open'"
-    [class.guessed]="card.state === 'guessed'"
+    [class.open]="card.state === cardState.OPEN"
+    [class.guessed]="card.state === cardState.GUESSED"
     [class.disabled]="openCardsAmount > 1"
     (click)="onClick(card)"
   >

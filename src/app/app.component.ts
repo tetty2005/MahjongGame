@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { GameService } from './game.service';
+import { GameService } from './enums/game.service';
+import { GameMode } from './enums/game-mode.enum';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,20 +20,20 @@ export class AppComponent {
     this.subscribe();
     this.gameMode = true;
     this.resultMessage = '';
-    this.gameService.modeChanged.next('on');
+    this.gameService.modeChanged.next(GameMode.ON);
   }
 
   private subscribe(): void  {
     this.subscription = this.gameService.modeChanged.subscribe(
       mode => {
         switch (mode) {
-          case 'time ended':
+          case GameMode.TIME_ENDED:
             this.onStop('Game Over!');
             break;
-          case 'started':
+          case GameMode.TIME_STARTED:
             this.isTimerStarted = true;
             break;
-          case 'win':
+          case GameMode.WIN:
             this.onStop('You are win!');
             break;
         }
@@ -41,7 +42,7 @@ export class AppComponent {
 
   private onStop(message: string): void {
     this.subscription.unsubscribe();
-    this.gameService.modeChanged.next('off');
+    this.gameService.modeChanged.next(GameMode.OFF);
     this.resultMessage = message || 'Try again!';
     this.isTimerStarted = false;
     this.gameMode = false;

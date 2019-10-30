@@ -1,5 +1,7 @@
+import { CardState } from './card-state.enum';
+
 export class Card {
-  public state = 'close';
+  public state: CardState = CardState.CLOSED;
 
   constructor(public name: number) { }
 }

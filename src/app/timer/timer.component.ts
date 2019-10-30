@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, interval, Subscription } from 'rxjs';
-import { GameService } from '../game.service';
 import { map } from 'rxjs/operators';
+import { GameService } from '../enums/game.service';
+import { GameMode } from '../enums/game-mode.enum';
 
 @Component({
   selector: 'app-timer',
@@ -20,10 +21,10 @@ export class TimerComponent implements OnInit {
     this.gameService.modeChanged.subscribe(
       mode => {
         switch (mode) {
-          case 'started':
+          case GameMode.TIME_STARTED:
             this.start();
             break;
-          case 'off':
+          case GameMode.OFF:
             this.stop();
             break;
         }
@@ -38,7 +39,7 @@ export class TimerComponent implements OnInit {
       .subscribe(v => {
         this.currentTime = this.formatValue(v);
         if (this.currentTime === '00:00') {
-          this.gameService.modeChanged.next('time ended');
+          this.gameService.modeChanged.next(GameMode.TIME_ENDED);
         }
       });
   }
